@@ -18,9 +18,12 @@ namespace CPE200Lab1
         private bool isAfterEqual;
         private string firstOperand;
         private string operate;
+        string secoundOperand;
 
         private void resetAll()
         {
+            secoundOperand = "0";
+            firstOperand = "0";
             lblDisplay.Text = "0";
             isAllowBack = true;
             hasDot = false;
@@ -121,7 +124,7 @@ namespace CPE200Lab1
                 case "÷":
                     if(firstOperand != null)
                     {
-                        string secoundOperand = lblDisplay.Text;
+                        secoundOperand = lblDisplay.Text;
                         string result = calculate(operate, firstOperand, secoundOperand);
                         if (result is "E" || result.Length > 8)
                         {
