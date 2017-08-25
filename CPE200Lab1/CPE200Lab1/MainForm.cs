@@ -119,10 +119,25 @@ namespace CPE200Lab1
                 case "-":
                 case "X":
                 case "÷":
+                    if(firstOperand != null)
+                    {
+                        string secoundOperand = lblDisplay.Text;
+                        string result = calculate(operate, firstOperand, secoundOperand);
+                        if (result is "E" || result.Length > 8)
+                        {
+                            lblDisplay.Text = "Error";
+                        }
+                        else
+                        {
+                            lblDisplay.Text = result;
+                            
+                        }
+                    }
                     firstOperand = lblDisplay.Text;
                     isAfterOperater = true;
                     break;
                 case "%":
+
                     // your code here
                     break;
             }
