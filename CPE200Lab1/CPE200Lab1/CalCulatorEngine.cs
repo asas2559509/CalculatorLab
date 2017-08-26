@@ -8,8 +8,9 @@ namespace CPE200Lab1
 {
     class CalCulatorEngine
     {
-        public string Calculate(string operate, string firstOperand, string secondOperand, int maxOutputSize = 8)
+        public string Calculate(string operate, string operate2, string firstOperand, string secondOperand, int maxOutputSize = 8)
         {
+            
             switch (operate)
             {
                 case "+":
@@ -41,6 +42,22 @@ namespace CPE200Lab1
                     }
                     break;
                 case "%":
+                    if (operate2 == "+")
+                    {
+                        return (Convert.ToDouble(firstOperand) + ((Convert.ToDouble(firstOperand) / 100) * Convert.ToDouble(secondOperand))).ToString();
+                    }
+                    if (operate2 == "-")
+                    {
+                        return (Convert.ToDouble(firstOperand) - ((Convert.ToDouble(firstOperand)/100) * Convert.ToDouble(secondOperand))).ToString();
+                    }
+                    if (operate2 == "x")
+                    {
+                        return (Convert.ToDouble(firstOperand) * ((Convert.ToDouble(firstOperand) / 100) * Convert.ToDouble(secondOperand))).ToString();
+                    }
+                    if (operate2 == "/")
+                    {
+                        return (Convert.ToDouble(firstOperand) / ((Convert.ToDouble(firstOperand) / 100) * Convert.ToDouble(secondOperand))).ToString();
+                    }
                     //your code here
                     break;
             }

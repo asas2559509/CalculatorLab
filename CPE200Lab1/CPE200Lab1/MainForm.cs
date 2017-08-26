@@ -15,17 +15,22 @@ namespace CPE200Lab1
         private bool hasDot;
         private bool isAllowBack;
         private bool isAfterOperater;
+        private bool isAfterOperater2 = true;
         private bool isAfterEqual;
         private string firstOperand;
         private string operate;
+        private string operate2;
+        private string operate3;
         private string secoundOperand;
         private CalCulatorEngine engine;
 
        private void resetAll()
         {
+            operate = "\0";
             secoundOperand = "0";
-            firstOperand = "0";
+            firstOperand = null;
             lblDisplay.Text = "0";
+            textBox1.Text = "";
             isAllowBack = true;
             hasDot = false;
             isAfterOperater = false;
@@ -81,6 +86,13 @@ namespace CPE200Lab1
 
             }
             operate = ((Button)sender).Text;
+            if(isAfterOperater2)
+            {
+                operate3 = operate;
+                isAfterOperater2 = false;
+
+            }
+            textBox1.Text = operate + " "+ operate3;
             switch (operate)
             {
 
@@ -91,7 +103,7 @@ namespace CPE200Lab1
                     if(firstOperand != null)
                     {
                         secoundOperand = lblDisplay.Text;
-                        string result = engine.Calculate(operate, firstOperand, secoundOperand);
+                        string result = engine.Calculate(operate,operate2, firstOperand, secoundOperand);
                         if (result is "E" || result.Length > 8)
                         {
                             lblDisplay.Text = "Error";
@@ -99,13 +111,30 @@ namespace CPE200Lab1
                         else
                         {
                             lblDisplay.Text = result;
-                            firstOperand = result;
                         }
+
                     }
                     firstOperand = lblDisplay.Text;
                     isAfterOperater = true;
                     break;
                 case "%":
+                    operate2 = operate3;
+                    textBox1.Text = operate + " " + operate2;
+                    if (firstOperand != null)
+                    {
+                        secoundOperand = lblDisplay.Text;
+                        string result = engine.Calculate(operate,operate2, firstOperand, secoundOperand);
+                        if (result is "E" || result.Length > 8)
+                        {
+                            lblDisplay.Text = "Error";
+                        }
+                        else
+                        {
+                            lblDisplay.Text = result;
+                        }
+                    }
+                    isAfterOperater = false;
+                    isAfterOperater2 = true;
 
                     // your code here
                     break;
@@ -120,7 +149,7 @@ namespace CPE200Lab1
                 return;
             }
             string secondOperand = lblDisplay.Text;
-            string result = engine.Calculate(operate, firstOperand, secondOperand);
+            string result = engine.Calculate(operate,operate2, firstOperand, secondOperand);
             if (result is "E" || result.Length > 8)
             {
                 lblDisplay.Text = "Error";
@@ -129,6 +158,7 @@ namespace CPE200Lab1
             {
                 lblDisplay.Text = result;
             }
+            lblDisplay.Text = result;
             isAfterEqual = true;
         }
 
@@ -210,6 +240,11 @@ namespace CPE200Lab1
                     lblDisplay.Text = "0";
                 }
             }
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
