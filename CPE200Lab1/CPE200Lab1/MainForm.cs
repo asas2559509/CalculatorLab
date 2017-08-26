@@ -14,7 +14,7 @@ namespace CPE200Lab1
     {
         private bool hasDot;
         private bool isAllowBack;
-        private bool isAfterOperater;
+        private bool isAfterOperater = true;
         private bool isAfterOperater2 = true;
         private bool isAfterEqual;
         private string firstOperand;
@@ -22,6 +22,8 @@ namespace CPE200Lab1
         private string operate2;
         private string operate3;
         private string secoundOperand;
+        private bool checkEqual = false;
+
         private CalCulatorEngine engine;
 
        private void resetAll()
@@ -35,6 +37,7 @@ namespace CPE200Lab1
             hasDot = false;
             isAfterOperater = false;
             isAfterEqual = false;
+            checkEqual = false;
         }
 
 
@@ -80,11 +83,7 @@ namespace CPE200Lab1
             {
                 return;
             }
-            if (isAfterOperater)
-            {
-                return;
-
-            }
+            
             operate = ((Button)sender).Text;
             if(isAfterOperater2)
             {
@@ -122,6 +121,11 @@ namespace CPE200Lab1
                     textBox1.Text = operate + " " + operate2;
                     if (firstOperand != null)
                     {
+                        if(isAfterOperater == true)
+                        {
+                            return;
+                        }
+                        
                         secoundOperand = lblDisplay.Text;
                         string result = engine.Calculate(operate,operate2, firstOperand, secoundOperand);
                         if (result is "E" || result.Length > 8)
@@ -133,8 +137,8 @@ namespace CPE200Lab1
                             lblDisplay.Text = result;
                         }
                     }
-                    isAfterOperater = false;
-                    isAfterOperater2 = true;
+                    isAfterOperater = true;
+                    //isAfterOperater2 = true;
 
                     // your code here
                     break;
@@ -144,12 +148,19 @@ namespace CPE200Lab1
 
         private void btnEqual_Click(object sender, EventArgs e)
         {
+            if(checkEqual == true)
+            {
+                return;
+            }
+            
             if (lblDisplay.Text is "Error")
             {
                 return;
             }
             string secondOperand = lblDisplay.Text;
-            string result = engine.Calculate(operate,operate2, firstOperand, secondOperand);
+
+            //textBox1.Text = firstOperand + " " + secondOperand;
+            string result = engine.Calculate(operate,operate2, firstOperand,secondOperand);
             if (result is "E" || result.Length > 8)
             {
                 lblDisplay.Text = "Error";
@@ -160,6 +171,7 @@ namespace CPE200Lab1
             }
             lblDisplay.Text = result;
             isAfterEqual = true;
+            checkEqual = true;
         }
 
         private void btnDot_Click(object sender, EventArgs e)
