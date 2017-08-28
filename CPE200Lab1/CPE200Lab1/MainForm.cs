@@ -21,8 +21,13 @@ namespace CPE200Lab1
         private string operate;
         private string operate2;
         private string operate3;
+        private string RootandOneoverXoperate;
+        private string M_Operate;
         private string secoundOperand;
         private bool checkEqual = false;
+        private string Savenum;
+        private double Msnumber;
+
 
         private CalCulatorEngine engine;
 
@@ -146,14 +151,65 @@ namespace CPE200Lab1
             isAllowBack = false;
         }
 
+        private void btnMixfunction_Click(object sender, EventArgs e)
+        {
+            RootandOneoverXoperate = ((Button)sender).Text;
+            switch (RootandOneoverXoperate)
+            {
+                case "√" :
+                    double Root = (Double)Math.Sqrt(Convert.ToDouble(lblDisplay.Text));
+                    lblDisplay.Text = Root.ToString();
+                    if (lblDisplay.Text.Length > 8)
+                    {
+                        string rootLength = lblDisplay.Text;
+                        lblDisplay.Text = rootLength.Substring(0,8);
+                    }
+                    break;
+                case "1/X":
+                    double OneOverX = (Convert.ToDouble(lblDisplay.Text));
+                    lblDisplay.Text = (1/OneOverX).ToString();
+                    if (lblDisplay.Text.Length > 8)
+                    {
+                        string OneoverXLength = lblDisplay.Text;
+                        lblDisplay.Text = OneoverXLength.Substring(0,8);
+                    }
+                    break;
+            }
+        }
+        private void btn_MOPerate_Click(object sender, EventArgs e)
+        {
+            M_Operate = ((Button)sender).Text;
+            
+            switch (M_Operate)
+            {
+                case "MS":
+                    Msnumber = (Convert.ToDouble(lblDisplay.Text));
+                    Savenum = Msnumber.ToString();
+                    break;
+                case "M-":
+                    Savenum = (Msnumber - (Convert.ToDouble(lblDisplay.Text))).ToString();
+                    break;
+                case "M+":
+
+                    Savenum = (Msnumber + (Convert.ToDouble(lblDisplay.Text))).ToString();
+
+                    break;
+                case "MR":
+                    lblDisplay.Text = Savenum;
+                    break;
+                case "MC":
+                    Savenum = null;
+                    Msnumber = 0;
+
+
+                    break;
+            }
+            isAfterOperater = true;
+        }
         private void btnEqual_Click(object sender, EventArgs e)
         {
-            if(checkEqual == true)
-            {
-                return;
-            }
             
-            if (lblDisplay.Text is "Error")
+            if (lblDisplay.Text is "Error"|| RootandOneoverXoperate == "√")
             {
                 return;
             }
@@ -161,6 +217,7 @@ namespace CPE200Lab1
 
             //textBox1.Text = firstOperand + " " + secondOperand;
             string result = engine.Calculate(operate,operate2, firstOperand,secondOperand);
+            
             if (result is "E" || result.Length > 8)
             {
                 lblDisplay.Text = "Error";
@@ -169,7 +226,7 @@ namespace CPE200Lab1
             {
                 lblDisplay.Text = result;
             }
-            lblDisplay.Text = result;
+            //lblDisplay.Text = result;
             isAfterEqual = true;
             checkEqual = true;
         }
@@ -197,6 +254,10 @@ namespace CPE200Lab1
 
         private void btnSign_Click(object sender, EventArgs e)
         {
+            if (lblDisplay.Text == "0")
+            {
+                return;
+            }
             if (lblDisplay.Text is "Error")
             {
                 return;
