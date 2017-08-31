@@ -12,7 +12,7 @@ namespace CPE200Lab1
 {
     public partial class MainForm : Form
     {
-        private bool hasDot;
+        private bool hasDot = false;
         private bool isAllowBack;
         private bool isAfterOperater = true;
         private bool isAfterOperater2 = true;
@@ -27,6 +27,7 @@ namespace CPE200Lab1
         private string M_Operate;
         private string secoundOperand;
         private bool checkEqual = false;
+        private bool checkEqual2 = false;
         private bool checkValue = false;
         private bool checkpersen = false;
         private string Savenum;
@@ -48,6 +49,7 @@ namespace CPE200Lab1
             isAfterOperater = false;
             isAfterEqual = false;
             checkEqual = false;
+            hasDot = false;
         }
 
 
@@ -102,6 +104,7 @@ namespace CPE200Lab1
                 checkValue = false;
                 textBox1.Text = firstOperand + " " + operate;
                 swicthOperate = operate;
+                hasDot = false;
                 return;
             }
             
@@ -111,8 +114,8 @@ namespace CPE200Lab1
                 operate = ((Button)sender).Text;
                 //lblDisplay.Text = engine.Calculate(operate, operate2, lblDisplay.Text,firstOperand);
                 textBox1.Text = firstOperand + " " + operate;
- 
                 checkValue = false ;
+                hasDot = false;
                 return;
             }
             else
@@ -140,10 +143,13 @@ namespace CPE200Lab1
                         if (swicthOperate != operate)
                         {
                             firstOperand = engine.Calculate(swicthOperate, operate2, firstOperand, lblDisplay.Text);
-                            lblDisplay.Text =firstOperand;
+                            double Roundnumber = Convert.ToDouble(firstOperand);
+                            Roundnumber = System.Math.Ceiling(Roundnumber * 100) / 100;
+                            lblDisplay.Text = Roundnumber.ToString(); ;
                             secoundOperand = lblDisplay.Text;
                             swicthOperate = operate;
                             isAfterOperater = true;
+                            hasDot = false;
                             return;
 
                         }
@@ -164,7 +170,9 @@ namespace CPE200Lab1
                         }
                         else
                         {
-                            lblDisplay.Text = result;
+                            double Roundnumber = Convert.ToDouble(result);
+                            Roundnumber = System.Math.Ceiling(Roundnumber * 100) / 100;
+                            lblDisplay.Text = Roundnumber.ToString();
                         }
 
                     }
@@ -177,7 +185,8 @@ namespace CPE200Lab1
             }
             isAllowBack = false;
             checkValue = false;
-            
+            hasDot = false;
+
         }
         private void btnPersenfunction_Click(object sender, EventArgs e)
         {
@@ -203,6 +212,7 @@ namespace CPE200Lab1
             secoundOperand = result;
             isAfterOperater = true;
             checkpersen = true;
+            hasDot = false;
         }
 
         private void btnMixfunction_Click(object sender, EventArgs e)
@@ -219,8 +229,13 @@ namespace CPE200Lab1
                         string rootLength = lblDisplay.Text;
                         lblDisplay.Text = rootLength.Substring(0,8);
                     }
+                    hasDot = false;
                     break;
                 case "1/X":
+                    if (lblDisplay.Text is "Error")
+                    {
+                        return;
+                    }
                     double OneOverX = (Convert.ToDouble(lblDisplay.Text));
                     if(OneOverX == 0)
                     {
@@ -233,6 +248,7 @@ namespace CPE200Lab1
                         string OneoverXLength = lblDisplay.Text;
                         lblDisplay.Text = OneoverXLength.Substring(0,8);
                     }
+                    hasDot = false;
                     break;
             }
         }
@@ -268,13 +284,15 @@ namespace CPE200Lab1
         }
         private void btnEqual_Click(object sender, EventArgs e)
         {
+
             
-            if (lblDisplay.Text is "Error"|| RootandOneoverXoperate == "√")
+
+            if (lblDisplay.Text is "Error" || RootandOneoverXoperate == "√")
             {
                 return;
             }
-            string secondOperand = lblDisplay.Text;
 
+            string secondOperand = lblDisplay.Text;
             //textBox1.Text = firstOperand + " " + secondOperand;
             string result = engine.Calculate(operate,operate2, firstOperand,secondOperand);
             
@@ -289,11 +307,14 @@ namespace CPE200Lab1
             }
             else
             {
-                lblDisplay.Text = result;
+                double Roundnumber = Convert.ToDouble(result);
+                Roundnumber = System.Math.Ceiling(Roundnumber * 100) / 100;
+                lblDisplay.Text = Roundnumber.ToString();
             }
             //lblDisplay.Text = result;
             isAfterEqual = true;
             checkEqual = true;
+            checkEqual2 = true;
         }
 
         private void btnDot_Click(object sender, EventArgs e)
@@ -310,7 +331,7 @@ namespace CPE200Lab1
             {
                 return;
             }
-            if (!hasDot)
+            if (hasDot == false)
             {
                 lblDisplay.Text += ".";
                 hasDot = true;
