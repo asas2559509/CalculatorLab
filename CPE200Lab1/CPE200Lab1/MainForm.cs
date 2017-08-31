@@ -22,11 +22,13 @@ namespace CPE200Lab1
         private string swicthOperate;
         private string operate2;
         private string operate3;
+        private string ResultPersen;
         private string RootandOneoverXoperate;
         private string M_Operate;
         private string secoundOperand;
         private bool checkEqual = false;
         private bool checkValue = false;
+        private bool checkpersen = false;
         private string Savenum;
         private double Msnumber;
 
@@ -92,17 +94,32 @@ namespace CPE200Lab1
             {
                 return;
             }
+            if (checkpersen)
+            {
+                firstOperand = lblDisplay.Text;
+                operate = ((Button)sender).Text;
+                checkpersen = false;
+                checkValue = false;
+                textBox1.Text = firstOperand + " " + operate;
+                swicthOperate = operate;
+                return;
+            }
+            
 
             if(checkValue == false)
             {
                 operate = ((Button)sender).Text;
-                lblDisplay.Text = "OK1";
+                //lblDisplay.Text = engine.Calculate(operate, operate2, lblDisplay.Text,firstOperand);
+                textBox1.Text = firstOperand + " " + operate;
+ 
+                checkValue = false ;
                 return;
             }
             else
             {
                 operate = ((Button)sender).Text;
-                
+                textBox1.Text = operate +" "+swicthOperate;
+
             }
             if(isAfterOperater2)
             {
@@ -136,9 +153,14 @@ namespace CPE200Lab1
                         }
  
                         string result = engine.Calculate(operate,operate2, firstOperand, secoundOperand);
-                        if (result is "E" || result.Length > 8)
+                        if (result is "E")
                         {
                             lblDisplay.Text = "Error";
+                            return;
+                        }
+                        if (result.Length > 8)
+                        {
+                            lblDisplay.Text = result.Substring(0, 8);
                         }
                         else
                         {
@@ -149,37 +171,38 @@ namespace CPE200Lab1
                     firstOperand = lblDisplay.Text;
                     isAfterOperater = true;
                     swicthOperate = operate;
+                    RootandOneoverXoperate = null;
                     break;
-                case "%":
-                    operate2 = operate3;
-                    textBox1.Text = operate + " " + operate2;
-                    if (firstOperand != null)
-                    {
-                        if(isAfterOperater == true)
-                        {
-                            return;
-                        }
-                        
-                        secoundOperand = lblDisplay.Text;
-                        string result = engine.Calculate(operate,operate2, firstOperand, secoundOperand);
-                        if (result is "E" || result.Length > 8)
-                        {
-                            lblDisplay.Text = "Error";
-                        }
-                        else
-                        {
-                            lblDisplay.Text = result;
-                        }
-                    }
-                    isAfterOperater = true;
-                    //isAfterOperater2 = true;
 
-                    // your code here
-                    break;
             }
             isAllowBack = false;
             checkValue = false;
             
+        }
+        private void btnPersenfunction_Click(object sender, EventArgs e)
+        {
+            if (isAfterOperater)
+            {
+                return;
+            }
+            operate2 = ((Button)sender).Text;
+            string result = engine.Calculate(operate, operate2, firstOperand, lblDisplay.Text);
+            if (result is "E")
+            {
+                lblDisplay.Text = "Error";
+                return;
+            }
+            if (result.Length > 8)
+            {
+                lblDisplay.Text = result.Substring(0, 8);
+            }
+            else
+            {
+                lblDisplay.Text = result;
+            }
+            secoundOperand = result;
+            isAfterOperater = true;
+            checkpersen = true;
         }
 
         private void btnMixfunction_Click(object sender, EventArgs e)
@@ -188,6 +211,7 @@ namespace CPE200Lab1
             switch (RootandOneoverXoperate)
             {
                 case "√" :
+                    
                     double Root = (Double)Math.Sqrt(Convert.ToDouble(lblDisplay.Text));
                     lblDisplay.Text = Root.ToString();
                     if (lblDisplay.Text.Length > 8)
@@ -198,6 +222,11 @@ namespace CPE200Lab1
                     break;
                 case "1/X":
                     double OneOverX = (Convert.ToDouble(lblDisplay.Text));
+                    if(OneOverX == 0)
+                    {
+                        lblDisplay.Text = "Error";
+                        return;
+                    }
                     lblDisplay.Text = (1/OneOverX).ToString();
                     if (lblDisplay.Text.Length > 8)
                     {
@@ -249,9 +278,14 @@ namespace CPE200Lab1
             //textBox1.Text = firstOperand + " " + secondOperand;
             string result = engine.Calculate(operate,operate2, firstOperand,secondOperand);
             
-            if (result is "E" || result.Length > 8)
+            if (result is "E" )
             {
                 lblDisplay.Text = "Error";
+                return;
+            }
+            if (result.Length > 8)
+            {
+                lblDisplay.Text = result.Substring(0, 8);
             }
             else
             {

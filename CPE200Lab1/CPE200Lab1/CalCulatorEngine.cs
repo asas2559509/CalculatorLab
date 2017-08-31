@@ -23,6 +23,7 @@ namespace CPE200Lab1
                     // Not allow devide be zero
                     if (secondOperand != "0")
                     {
+                        
                         double result;
                         string[] parts;
                         int remainLength;
@@ -40,6 +41,8 @@ namespace CPE200Lab1
                         // trim the fractional part gracefully. =
                         return result.ToString("N" + remainLength);
                     }
+                    
+                    
                     break;
                 case "%":
                     if (operate2 == "+")
