@@ -18,6 +18,7 @@ namespace CPE200Lab1
         private bool isAfterOperater2 = true;
         private bool isAfterEqual;
         private string firstOperand;
+        private string firstOperand2;
         private string operate;
         private string swicthOperate;
         private string operate2;
@@ -26,6 +27,7 @@ namespace CPE200Lab1
         private string RootandOneoverXoperate;
         private string M_Operate;
         private string secoundOperand;
+        private string secoundOperand2;
         private bool checkEqual = false;
         private bool checkEqual2 = false;
         private bool checkValue = false;
@@ -116,6 +118,7 @@ namespace CPE200Lab1
                 textBox1.Text = firstOperand + " " + operate;
                 checkValue = false ;
                 hasDot = false;
+                firstOperand2 = lblDisplay.Text;
                 return;
             }
             else
@@ -150,6 +153,7 @@ namespace CPE200Lab1
                             swicthOperate = operate;
                             isAfterOperater = true;
                             hasDot = false;
+                            firstOperand2 = lblDisplay.Text;
                             return;
 
                         }
@@ -167,6 +171,7 @@ namespace CPE200Lab1
                         if (result.Length > 8)
                         {
                             lblDisplay.Text = result.Substring(0, 8);
+                            firstOperand2 = lblDisplay.Text;
                         }
                         else
                         {
@@ -284,9 +289,37 @@ namespace CPE200Lab1
         }
         private void btnEqual_Click(object sender, EventArgs e)
         {
+            if(checkEqual2 == true)
+            {
+                string result2 = engine.Calculate(operate, operate2, firstOperand2,secoundOperand2);
+                if (result2 is "E")
+                {
+                    lblDisplay.Text = "Error";
+                    return;
+                }
+                if (result2.Length > 8)
+                {
+                    lblDisplay.Text = result2.Substring(0, 8);
+                }
+                else
+                {
+                    double Roundnumber = Convert.ToDouble(result2);
+                    Roundnumber = System.Math.Ceiling(Roundnumber * 100) / 100;
+                    lblDisplay.Text = Roundnumber.ToString();
+                }
+                firstOperand2 = lblDisplay.Text;
+                textBox1.Text = firstOperand2;
+                return;
+                
 
+            }
+            if(checkEqual2 == false)
+            {
+                secoundOperand2 = lblDisplay.Text;
+                textBox1.Text = secoundOperand2;
+                
+            }
             
-
             if (lblDisplay.Text is "Error" || RootandOneoverXoperate == "√")
             {
                 return;
@@ -315,6 +348,7 @@ namespace CPE200Lab1
             isAfterEqual = true;
             checkEqual = true;
             checkEqual2 = true;
+            firstOperand2 = lblDisplay.Text;
         }
 
         private void btnDot_Click(object sender, EventArgs e)
