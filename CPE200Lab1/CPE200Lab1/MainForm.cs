@@ -43,7 +43,9 @@ namespace CPE200Lab1
             operate = null;
             swicthOperate = null;
             secoundOperand = "0";
+            secoundOperand2 = "0";
             firstOperand = null;
+            firstOperand2 = null;
             lblDisplay.Text = "0";
             textBox1.Text = "";
             isAllowBack = true;
@@ -51,6 +53,7 @@ namespace CPE200Lab1
             isAfterOperater = false;
             isAfterEqual = false;
             checkEqual = false;
+            checkEqual2 = false;
             hasDot = false;
         }
 
@@ -90,12 +93,19 @@ namespace CPE200Lab1
             lblDisplay.Text += digit;
             isAfterOperater = false;
             checkValue = true;
+            checkEqual2 = false;
         }
 
         private void btnOperator_Click(object sender, EventArgs e)
         {
+            checkEqual2 = false;
             if (lblDisplay.Text is "Error")
             {
+                return;
+            }
+            if (isAfterOperater == true)
+            {
+                operate = ((Button)sender).Text;
                 return;
             }
             if (checkpersen)
@@ -121,12 +131,11 @@ namespace CPE200Lab1
                 firstOperand2 = lblDisplay.Text;
                 return;
             }
-            else
-            {
-                operate = ((Button)sender).Text;
-                textBox1.Text = operate +" "+swicthOperate;
+            
+             operate = ((Button)sender).Text;
+             textBox1.Text = operate +" "+swicthOperate;
 
-            }
+            
             if(isAfterOperater2)
             {
                 operate3 = operate;
@@ -141,7 +150,7 @@ namespace CPE200Lab1
                 case "-":
                 case "X":
                 case "÷":
-                    if(firstOperand != null)
+                    if(firstOperand != null&&checkEqual==false)
                     {
                         if (swicthOperate != operate)
                         {
@@ -345,10 +354,13 @@ namespace CPE200Lab1
                 lblDisplay.Text = Roundnumber.ToString();
             }
             //lblDisplay.Text = result;
+            swicthOperate = operate;
             isAfterEqual = true;
             checkEqual = true;
-            checkEqual2 = true;
+            checkEqual2 = true ;
             firstOperand2 = lblDisplay.Text;
+            isAfterOperater = false;
+            firstOperand = lblDisplay.Text;
         }
 
         private void btnDot_Click(object sender, EventArgs e)
