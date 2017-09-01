@@ -12,35 +12,57 @@ namespace CPE200Lab1
 {
     public partial class MainForm : Form
     {
-        private bool hasDot;
+        private bool hasDot = false;
         private bool isAllowBack;
-        private bool isAfterOperater;
+        private bool isAfterOperater = true;
+        private bool isAfterOperater2 = true;
         private bool isAfterEqual;
         private string firstOperand;
+        private string firstOperand2;
         private string operate;
-        private double memory;
-        private CalculatorEngine engine;
-        string secoundOperand;
+        private string swicthOperate;
+        private string operate2;
+        private string operate3;
+        private string ResultPersen;
+        private string RootandOneoverXoperate;
+        private string M_Operate;
+        private string secoundOperand;
+        private string secoundOperand2;
+        private bool checkEqual = false;
+        private bool checkEqual2 = false;
+        private bool checkValue = false;
+        private bool checkpersen = false;
+        private string Savenum;
+        private double Msnumber;
 
-        private void resetAll()
+
+        private CalCulatorEngine engine;
+
+       private void resetAll()
         {
+            operate = null;
+            swicthOperate = null;
             secoundOperand = "0";
-            firstOperand = "0";
+            secoundOperand2 = "0";
+            firstOperand = null;
+            firstOperand2 = null;
             lblDisplay.Text = "0";
+            textBox1.Text = "";
             isAllowBack = true;
             hasDot = false;
             isAfterOperater = false;
             isAfterEqual = false;
-            firstOperand = null;
+            checkEqual = false;
+            checkEqual2 = false;
+            hasDot = false;
         }
 
-      
+
 
         public MainForm()
         {
             InitializeComponent();
-            memory = 0;
-            engine = new CalculatorEngine();
+            engine = new CalCulatorEngine();
             resetAll();
         }
 
@@ -70,104 +92,275 @@ namespace CPE200Lab1
             }
             lblDisplay.Text += digit;
             isAfterOperater = false;
-        }
-
-        private void btnUnaryOperator_Click(object sender, EventArgs e)
-        {
-            if (lblDisplay.Text is "Error")
-            {
-                return;
-            }
-            if (isAfterOperater)
-            {
-                return;
-            }
-            operate = ((Button)sender).Text;
-            firstOperand = lblDisplay.Text;
-            string result = engine.unaryCalculate(operate, firstOperand);
-            if (result is "E" || result.Length > 8)
-            {
-                lblDisplay.Text = "Error";
-            }
-            else
-            {
-                lblDisplay.Text = result;
-            }
-
+            checkValue = true;
+            checkEqual2 = false;
         }
 
         private void btnOperator_Click(object sender, EventArgs e)
         {
+            checkEqual2 = false;
             if (lblDisplay.Text is "Error")
             {
                 return;
             }
+            if (isAfterOperater == true)
+            {
+                operate = ((Button)sender).Text;
+                return;
+            }
+            if (checkpersen)
+            {
+                firstOperand = lblDisplay.Text;
+                operate = ((Button)sender).Text;
+                checkpersen = false;
+                checkValue = false;
+                textBox1.Text = firstOperand + " " + operate;
+                swicthOperate = operate;
+                hasDot = false;
+                return;
+            }
+            
+
+            if(checkValue == false)
+            {
+                operate = ((Button)sender).Text;
+                //lblDisplay.Text = engine.Calculate(operate, operate2, lblDisplay.Text,firstOperand);
+                textBox1.Text = firstOperand + " " + operate;
+                checkValue = false ;
+                hasDot = false;
+                firstOperand2 = lblDisplay.Text;
+                return;
+            }
+            
+             operate = ((Button)sender).Text;
+             textBox1.Text = operate +" "+swicthOperate;
+
+            
+            if(isAfterOperater2)
+            {
+                operate3 = operate;
+                isAfterOperater2 = false;
+
+            }
+            textBox1.Text = operate + " "+ operate3;
+            switch (operate)
+            {
+
+                case "+":  
+                case "-":
+                case "X":
+                case "÷":
+                    if(firstOperand != null&&checkEqual==false)
+                    {
+                        if (swicthOperate != operate)
+                        {
+                            firstOperand = engine.Calculate(swicthOperate, operate2, firstOperand, lblDisplay.Text);
+                            double Roundnumber = Convert.ToDouble(firstOperand);
+                            Roundnumber = System.Math.Ceiling(Roundnumber * 100) / 100;
+                            lblDisplay.Text = Roundnumber.ToString(); ;
+                            secoundOperand = lblDisplay.Text;
+                            swicthOperate = operate;
+                            isAfterOperater = true;
+                            hasDot = false;
+                            firstOperand2 = lblDisplay.Text;
+                            return;
+
+                        }
+                        else
+                        {
+                            secoundOperand = lblDisplay.Text;
+                        }
+ 
+                        string result = engine.Calculate(operate,operate2, firstOperand, secoundOperand);
+                        if (result is "E")
+                        {
+                            lblDisplay.Text = "Error";
+                            return;
+                        }
+                        if (result.Length > 8)
+                        {
+                            lblDisplay.Text = result.Substring(0, 8);
+                            firstOperand2 = lblDisplay.Text;
+                        }
+                        else
+                        {
+                            double Roundnumber = Convert.ToDouble(result);
+                            Roundnumber = System.Math.Ceiling(Roundnumber * 100) / 100;
+                            lblDisplay.Text = Roundnumber.ToString();
+                        }
+
+                    }
+                    firstOperand = lblDisplay.Text;
+                    isAfterOperater = true;
+                    swicthOperate = operate;
+                    RootandOneoverXoperate = null;
+                    break;
+
+            }
+            isAllowBack = false;
+            checkValue = false;
+            hasDot = false;
+
+        }
+        private void btnPersenfunction_Click(object sender, EventArgs e)
+        {
             if (isAfterOperater)
             {
                 return;
             }
-            if(firstOperand != null)
-            {
-                string secondOperand = lblDisplay.Text;
-                string result = engine.calculate(operate, firstOperand, secondOperand);
-                if (result is "E" || result.Length > 8)
-                {
-                    lblDisplay.Text = "Error";
-                }
-                else
-                {
-                    lblDisplay.Text = result;
-                }
-            }
-            operate = ((Button)sender).Text;
-            switch (operate)
-            {
-                case "+":
-                case "-":
-                case "X":
-                case "÷":
-                    if(firstOperand != null)
-                    {
-                        secoundOperand = lblDisplay.Text;
-                        string result = calculate(operate, firstOperand, secoundOperand);
-                        if (result is "E" || result.Length > 8)
-                        {
-                            lblDisplay.Text = "Error";
-                        }
-                        else
-                        {
-                            lblDisplay.Text = result;
-                            
-                        }
-                    }
-                    firstOperand = lblDisplay.Text;
-                    isAfterOperater = true;
-                    break;
-                case "%":
-
-                    // your code here
-                    break;
-            }
-            isAllowBack = false;
-        }
-
-        private void btnEqual_Click(object sender, EventArgs e)
-        {
-            if (lblDisplay.Text is "Error")
-            {
-                return;
-            }
-            string secondOperand = lblDisplay.Text;
-            string result = engine.calculate(operate, firstOperand, secondOperand);
-            if (result is "E" || result.Length > 8)
+            operate2 = ((Button)sender).Text;
+            string result = engine.Calculate(operate, operate2, firstOperand, lblDisplay.Text);
+            if (result is "E")
             {
                 lblDisplay.Text = "Error";
+                return;
+            }
+            if (result.Length > 8)
+            {
+                lblDisplay.Text = result.Substring(0, 8);
             }
             else
             {
                 lblDisplay.Text = result;
             }
+            secoundOperand = result;
+            isAfterOperater = true;
+            checkpersen = true;
+            hasDot = false;
+        }
+
+        private void btnMixfunction_Click(object sender, EventArgs e)
+        {
+            RootandOneoverXoperate = ((Button)sender).Text;
+            switch (RootandOneoverXoperate)
+            {
+                case "√" :
+                    
+                    double Root = (Double)Math.Sqrt(Convert.ToDouble(lblDisplay.Text));
+                    lblDisplay.Text = Root.ToString();
+                    if (lblDisplay.Text.Length > 8)
+                    {
+                        string rootLength = lblDisplay.Text;
+                        lblDisplay.Text = rootLength.Substring(0,8);
+                    }
+                    hasDot = false;
+                    break;
+                case "1/X":
+                    if (lblDisplay.Text is "Error")
+                    {
+                        return;
+                    }
+                    double OneOverX = (Convert.ToDouble(lblDisplay.Text));
+                    if(OneOverX == 0)
+                    {
+                        lblDisplay.Text = "Error";
+                        return;
+                    }
+                    lblDisplay.Text = (1/OneOverX).ToString();
+                    if (lblDisplay.Text.Length > 8)
+                    {
+                        string OneoverXLength = lblDisplay.Text;
+                        lblDisplay.Text = OneoverXLength.Substring(0,8);
+                    }
+                    hasDot = false;
+                    break;
+            }
+        }
+        private void btn_MOPerate_Click(object sender, EventArgs e)
+        {
+            M_Operate = ((Button)sender).Text;
+            
+            switch (M_Operate)
+            {
+                case "MS":
+                    Msnumber = (Convert.ToDouble(lblDisplay.Text));
+                    Savenum = Msnumber.ToString();
+                    break;
+                case "M-":
+                    Savenum = (Msnumber - (Convert.ToDouble(lblDisplay.Text))).ToString();
+                    break;
+                case "M+":
+
+                    Savenum = (Msnumber + (Convert.ToDouble(lblDisplay.Text))).ToString();
+
+                    break;
+                case "MR":
+                    lblDisplay.Text = Savenum;
+                    break;
+                case "MC":
+                    Savenum = null;
+                    Msnumber = 0;
+
+
+                    break;
+            }
+            isAfterOperater = true;
+        }
+        private void btnEqual_Click(object sender, EventArgs e)
+        {
+            if(checkEqual2 == true)
+            {
+                string result2 = engine.Calculate(operate, operate2, firstOperand2,secoundOperand2);
+                if (result2 is "E")
+                {
+                    lblDisplay.Text = "Error";
+                    return;
+                }
+                if (result2.Length > 8)
+                {
+                    lblDisplay.Text = result2.Substring(0, 8);
+                }
+                else
+                {
+                    double Roundnumber = Convert.ToDouble(result2);
+                    Roundnumber = System.Math.Ceiling(Roundnumber * 100) / 100;
+                    lblDisplay.Text = Roundnumber.ToString();
+                }
+                firstOperand2 = lblDisplay.Text;
+                textBox1.Text = firstOperand2;
+                return;
+                
+
+            }
+            if(checkEqual2 == false)
+            {
+                secoundOperand2 = lblDisplay.Text;
+                textBox1.Text = secoundOperand2;
+                
+            }
+            
+            if (lblDisplay.Text is "Error" || RootandOneoverXoperate == "√")
+            {
+                return;
+            }
+
+            string secondOperand = lblDisplay.Text;
+            //textBox1.Text = firstOperand + " " + secondOperand;
+            string result = engine.Calculate(operate,operate2, firstOperand,secondOperand);
+            
+            if (result is "E" )
+            {
+                lblDisplay.Text = "Error";
+                return;
+            }
+            if (result.Length > 8)
+            {
+                lblDisplay.Text = result.Substring(0, 8);
+            }
+            else
+            {
+                double Roundnumber = Convert.ToDouble(result);
+                Roundnumber = System.Math.Ceiling(Roundnumber * 100) / 100;
+                lblDisplay.Text = Roundnumber.ToString();
+            }
+            //lblDisplay.Text = result;
+            swicthOperate = operate;
             isAfterEqual = true;
+            checkEqual = true;
+            checkEqual2 = true ;
+            firstOperand2 = lblDisplay.Text;
+            isAfterOperater = false;
+            firstOperand = lblDisplay.Text;
         }
 
         private void btnDot_Click(object sender, EventArgs e)
@@ -184,7 +377,7 @@ namespace CPE200Lab1
             {
                 return;
             }
-            if (!hasDot)
+            if (hasDot == false)
             {
                 lblDisplay.Text += ".";
                 hasDot = true;
@@ -193,6 +386,10 @@ namespace CPE200Lab1
 
         private void btnSign_Click(object sender, EventArgs e)
         {
+            if (lblDisplay.Text == "0")
+            {
+                return;
+            }
             if (lblDisplay.Text is "Error")
             {
                 return;
@@ -250,38 +447,9 @@ namespace CPE200Lab1
             }
         }
 
-        private void btnMP_Click(object sender, EventArgs e)
+        private void textBox1_TextChanged(object sender, EventArgs e)
         {
-            if(lblDisplay.Text is "Error")
-            {
-                return;
-            }
-            memory += Convert.ToDouble(lblDisplay.Text);
-            isAfterOperater = true;
-        }
 
-        private void btnMC_Click(object sender, EventArgs e)
-        {
-            memory = 0;
-        }
-
-        private void btnMM_Click(object sender, EventArgs e)
-        {
-            if(lblDisplay.Text is "Error")
-            {
-                return;
-            }
-            memory -= Convert.ToDouble(lblDisplay.Text);
-            isAfterOperater = true;
-        }
-
-        private void btnMR_Click(object sender, EventArgs e)
-        {
-            if(lblDisplay.Text is "error")
-            {
-                return;
-            }
-            lblDisplay.Text = memory.ToString();
         }
     }
 }
