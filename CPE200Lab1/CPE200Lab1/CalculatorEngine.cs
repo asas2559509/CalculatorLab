@@ -27,13 +27,30 @@ namespace CPE200Lab1
         }
         public string Process(string str)
         {
+            string result2;
+            int round=0;
+            int roundfor = -1;
+
             string[] parts = str.Split(' ');
             if(!(isNumber(parts[0]) && isOperator(parts[1]) && isNumber(parts[2])))
             {
                 return "E";
             } else
             {
-                return calculate(parts[1], parts[0], parts[2], 4);
+                for(int a = 3; a <= parts.Length; a += 2)
+                {
+                    roundfor++;
+              
+                }
+                //return roundfor.ToString();
+                for(int i =1;i<=roundfor;i++){
+                    result2 = calculate(parts[1+round], parts[0+round], parts[2+round], 4);
+                    parts[2+round] = result2;
+                    round += 2;
+
+
+                }
+                return calculate(parts[1+round], parts[0+round], parts[2+round], 4);
             }
 
         }
@@ -122,6 +139,14 @@ namespace CPE200Lab1
                     break;
             }
             return "E";
+        }
+        public string calculate_persent(string str)
+        {
+            string resultpersent;
+            string[] parts = str.Split(' ');
+            resultpersent = ((Convert.ToDouble(parts[0]) / 100) * Convert.ToDouble(parts[2])).ToString();
+            return parts[0] + " " + parts[1] + " " + resultpersent;
+
         }
     }
 }
