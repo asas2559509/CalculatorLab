@@ -8,6 +8,8 @@ namespace CPE200Lab1
 {
     class CalculatorEngine
     {
+        private string result3;
+
         private bool isNumber(string str)
         {
             double retNum;
@@ -16,7 +18,8 @@ namespace CPE200Lab1
 
         private bool isOperator(string str)
         {
-            switch(str) {
+            switch (str)
+            {
                 case "+":
                 case "-":
                 case "X":
@@ -28,29 +31,31 @@ namespace CPE200Lab1
         public string Process(string str)
         {
             string result2;
-            int round=0;
+            int round = 0;
             int roundfor = -1;
 
             string[] parts = str.Split(' ');
-            if(!(isNumber(parts[0]) && isOperator(parts[1]) && isNumber(parts[2])))
+            if (!(isNumber(parts[0]) && isOperator(parts[1]) && isNumber(parts[2])))
             {
                 return "E";
-            } else
+            }
+            else
             {
-                for(int a = 3; a <= parts.Length; a += 2)
+                for (int a = 3; a <= parts.Length; a += 2)
                 {
                     roundfor++;
-              
+
                 }
                 //return roundfor.ToString();
-                for(int i =1;i<=roundfor;i++){
-                    result2 = calculate(parts[1+round], parts[0+round], parts[2+round], 4);
-                    parts[2+round] = result2;
+                for (int i = 1; i <= roundfor; i++)
+                {
+                    result2 = calculate(parts[1 + round], parts[0 + round], parts[2 + round], 4);
+                    parts[2 + round] = result2;
                     round += 2;
 
 
                 }
-                return calculate(parts[1+round], parts[0+round], parts[2+round], 4);
+                return calculate(parts[1 + round], parts[0 + round], parts[2 + round], 4);
             }
 
         }
@@ -78,7 +83,7 @@ namespace CPE200Lab1
                         return result.ToString("N" + remainLength);
                     }
                 case "1/x":
-                    if(operand != "0")
+                    if (operand != "0")
                     {
                         double result;
                         string[] parts;
@@ -144,9 +149,45 @@ namespace CPE200Lab1
         {
             string resultpersent;
             string[] parts = str.Split(' ');
-            resultpersent = ((Convert.ToDouble(parts[0]) / 100) * Convert.ToDouble(parts[2])).ToString();
-            return parts[0] + " " + parts[1] + " " + resultpersent;
+            string[] parts2 = str.Split(' ');
+            string[] parts3 = new string[parts2.Length];
 
+
+            string result2;
+            int round = 0;
+            int roundfor = -1;
+
+            if (!(isNumber(parts[0]) && isOperator(parts[1]) && isNumber(parts[2])))
+            {
+                return "E";
+            }
+            else
+            {
+                for (int a = 3; a <= parts.Length; a += 2)
+                {
+                    roundfor++;
+
+                }
+
+                for (int i = 1; i <= roundfor; i++)
+                {
+                    result2 = calculate(parts[1 + round], parts[0 + round], parts[2 + round], 4);
+                    parts[2 + round] = result2;
+                    round += 2;
+
+
+                }
+
+                resultpersent = ((Convert.ToDouble(parts[0 + round]) / 100) * Convert.ToDouble(parts[2 + round])).ToString();
+                for(int i = 0; i <= parts2.Length - 2; i++)
+                {
+                    parts3[i] = parts2[i];
+                }
+                parts3[parts2.Length - 1] = resultpersent;
+                
+                return string.Join(" ",parts3);
+
+            }
         }
     }
 }

@@ -87,6 +87,10 @@ namespace CPE200Lab1
 
         private void btnEqual_Click(object sender, EventArgs e)
         {
+            if (isNumberPart)
+            {
+                return;
+            }
             string result = engine.Process(lblDisplay.Text);
             if (result is "E")
             {
@@ -103,10 +107,7 @@ namespace CPE200Lab1
             {
                 return;
             }
-            if (isNumberPart)
-            {
-                return;
-            }
+            
             string current = lblDisplay.Text;
             if (current is "0")
             {
