@@ -14,6 +14,7 @@ namespace CPE200Lab1
     {
         private bool isNumberPart = false;
         private bool isContainDot = false;
+        private int checkturn = 0;
         private CalculatorEngine engine;
         public ExtendForm()
         {
@@ -55,6 +56,7 @@ namespace CPE200Lab1
             isNumberPart = false;
             isContainDot = false;
             lblDisplay.Text += " " + ((Button)sender).Text + " ";
+            checkturn++;
         }
 
         private void btnBack_Click(object sender, EventArgs e)
@@ -83,14 +85,15 @@ namespace CPE200Lab1
             lblDisplay.Text = "0";
             isContainDot = false;
             isNumberPart = false;
+            checkturn = 0;
         }
 
         private void btnEqual_Click(object sender, EventArgs e)
         {
-            if (isNumberPart)
+           if(checkturn == 0)
             {
                 return;
-            }
+            } 
             string result = engine.Process(lblDisplay.Text);
             if (result is "E")
             {
@@ -99,6 +102,7 @@ namespace CPE200Lab1
             {
                 lblDisplay.Text = result;
             }
+            checkturn = 0;
         }
 
         private void btnSign_Click(object sender, EventArgs e)

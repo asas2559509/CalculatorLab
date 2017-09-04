@@ -8,7 +8,7 @@ namespace CPE200Lab1
 {
     class CalculatorEngine
     {
-        private string result3;
+        
 
         private bool isNumber(string str)
         {
@@ -185,7 +185,7 @@ namespace CPE200Lab1
                 }
                 parts3[parts2.Length - 1] = resultpersent;
                 
-                return string.Join(" ",parts3);
+                return string.Join(" ",parts3); //string array to string
 
             }
         }
