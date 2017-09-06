@@ -152,7 +152,6 @@ namespace CPE200Lab1
             string[] parts2 = str.Split(' ');
             string[] parts3 = new string[parts2.Length];
 
-
             string result2;
             int round = 0;
             int roundfor = -1;
