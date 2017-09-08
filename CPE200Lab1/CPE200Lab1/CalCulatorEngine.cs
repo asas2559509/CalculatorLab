@@ -35,7 +35,7 @@ namespace CPE200Lab1
             int roundfor = -1;
 
             string[] parts = str.Split(' ');
-            // ทำเครื่องหมายก่อน
+            // RPN
             for(int i = 0; i <= parts.Length-1; i++)
             {
                 if(parts[i]=="X"|| parts[i] == "÷")
@@ -43,15 +43,25 @@ namespace CPE200Lab1
                     string result = calculate(parts[i], parts[i - 1], parts[i + 1], 4);
                     parts[i - 1] = result;
                     string[] partscal = new string[parts.Length-2];
+                    int num1=0;
                     for (int j = 0; j <=i-1; j++)
                     {
                         partscal[j] = parts[j];
+                        num1++;
                         
                     }
-                    return string.Join(" ", partscal);
+                    for (int k = num1; k <= partscal.Length-1; k++)
+                    {
+                        partscal[k] = parts[k+2];
+                        
+
+                    }
+                    //return string.Join(" ", partscal);
+                    parts = partscal;
+                    i -= 1;
                 }
             }
-            //ทำเครื่องหมายก่อน
+            //RPN
             if (!(isNumber(parts[0]) && isOperator(parts[1]) && isNumber(parts[2])))
             {
                 return "E";
