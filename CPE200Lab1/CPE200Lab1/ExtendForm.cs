@@ -52,6 +52,7 @@ namespace CPE200Lab1
             }
             lblDisplay.Text += ((Button)sender).Text;
             isSpaceAllowed = true;
+            isContainDot = false;
         }
 
         private void btnBinaryOperator_Click(object sender, EventArgs e)
@@ -113,6 +114,24 @@ namespace CPE200Lab1
 
         private void btnSign_Click(object sender, EventArgs e)
         {
+            if (lblDisplay.Text is "Error" || isNumberPart is false)
+            {
+                return;
+            }
+            string[] parts = lblDisplay.Text.Split(' ');
+            string lastpoint = parts[parts.Length - 1];
+            lblDisplay.Text = lastpoint;
+            if (lastpoint[0] == '-')
+            {
+                lastpoint = lastpoint.Substring(1, lastpoint.Length - 1);
+                parts[parts.Length - 1] = lastpoint;
+            }
+            else
+            {
+                parts[parts.Length - 1] = "-" + parts[parts.Length - 1];
+            }
+            lblDisplay.Text = string.Join(" ", parts);
+            /*
             if (lblDisplay.Text is "Error")
             {
                 return;
@@ -137,6 +156,7 @@ namespace CPE200Lab1
                 lblDisplay.Text = current + "-";
             }
             isSpaceAllowed = false;
+            */
         }
 
         private void btnDot_Click(object sender, EventArgs e)
