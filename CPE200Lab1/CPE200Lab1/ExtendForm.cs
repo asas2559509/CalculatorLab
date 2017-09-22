@@ -65,6 +65,12 @@ namespace CPE200Lab1
             string current = lblDisplay.Text;
             if (current[current.Length - 1] != ' ' || isOperator(current[current.Length - 2]))
             {
+                if(lblDisplay.Text == "0")
+                {
+                    lblDisplay.Text = ((Button)sender).Text;
+                    isSpaceAllowed = false;
+                    return;
+                }
                 lblDisplay.Text += " " + ((Button)sender).Text + " ";
                 isSpaceAllowed = false;
             }
@@ -101,7 +107,9 @@ namespace CPE200Lab1
 
         private void btnEqual_Click(object sender, EventArgs e)
         {
+            
             string result = engine.Process(lblDisplay.Text);
+            
             if (result is "E")
             {
                 lblDisplay.Text = "Error";
